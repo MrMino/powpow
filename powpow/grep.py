@@ -3,7 +3,7 @@ ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
 
-class grepr:  # noqa
+class grep:  # noqa
     def __init__(self, pattern: str, highlight: bool = True):
         self.pattern = pattern
         self.highlight = highlight
@@ -39,4 +39,3 @@ class grepr:  # noqa
 
                 matches[idx] = line
                 match_pos += len(ANSI_RED) + len(ANSI_RESET)
-            
