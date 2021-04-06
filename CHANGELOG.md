@@ -5,12 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-### Added
-- Nothing yet
-
+## [0.0.2]
 ### Changed
-- Nothing yet
+- PowPow Grep is now directly importable from `powpow` module as `powpow.grep`.
+- `powpow.grep` will now use `pproint.pformat` for translating objects to
+  strings, instead of the plain `repr()`.
+
+### Added
+- `powpow.grep` can now be `str()`-ingified to obtain the contents that it
+  prints.
 
 ## [0.0.1]
 First version of the library.
@@ -18,5 +21,6 @@ First version of the library.
 ### Added
 - The most basic, dashed of version of PowPow Grep utility.
 
-[Unreleased]: https://github.com/mrmino/powpow/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/mrmino/powpow/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/mrmino/powpow/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/mrmino/powpow/releases/tag/v0.0.1
