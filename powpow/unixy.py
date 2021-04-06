@@ -1,4 +1,6 @@
 # coding: utf-8
+from pprint import pformat
+
 ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
@@ -12,7 +14,7 @@ class grep:  # noqa
         if isinstance(obj, str):
             lines = obj.splitlines()
         else:
-            lines = repr(obj).splitlines()
+            lines = pformat(obj).splitlines()
         matches = list(filter(lambda line: self.pattern in line, lines))
         if self.highlight:
             self._highlight(matches)
