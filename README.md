@@ -17,8 +17,9 @@ dicts using PowPow:
 ```py
 from powpow import grep
 
-# locals() is used as an example of a dict you might want to grep
-# you can use any other dict in its place
+# locals() is used as an example of a dict you might want to grep. You can
+# pass any other object instead - grep() will pretty-format it and try to find
+# a match.
 locals() | grep ("powpow")
 ```
 
