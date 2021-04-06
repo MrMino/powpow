@@ -12,4 +12,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Nothing yet
 
-[unreleased]: https://github.com/mrmino/powpow/
+## [0.0.1]
+First version of the library.
+
+### Added
+- The most basic, dashed of version of PowPow Grep utility.
+
+[Unreleased]: https://github.com/mrmino/powpow/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/mrmino/powpow/releases/tag/v0.0.1
