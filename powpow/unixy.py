@@ -20,7 +20,11 @@ class grep:  # noqa
             self._highlight(matches)
 
         self.matches = matches
-        print('\n'.join(self.matches))
+        print(str(self))
+        return self
+
+    def __str__(self):
+        return '\n'.join(self.matches)
 
     def _highlight(self, matches):
         for idx, line in enumerate(matches):
