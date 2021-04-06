@@ -19,6 +19,8 @@ from powpow import grep
 locals() | grep ("powpow")
 ```
 
-![image](https://user-images.githubusercontent.com/6691643/113652843-dd79b800-9694-11eb-8ea1-1481f723f1d4.png)
+<p align="center">
+<img src="https://user-images.githubusercontent.com/6691643/113652843-dd79b800-9694-11eb-8ea1-1481f723f1d4.png" align="center"/>
+</p>
 
 </p>
