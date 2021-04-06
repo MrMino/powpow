@@ -5,11 +5,15 @@ ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
 
+# TODO: make this such that match results aren't inclued in its state
 class grep:  # noqa
     def __init__(self, pattern: str, highlight: bool = True):
         self.pattern = pattern
         self.highlight = highlight
 
+    # TODO: this should return some kind of a result object with repr, instead
+    # of printing.
+    # FIXME: TypeError: unsupported operand type(s) for |: 'grep' and 'grep'
     def __ror__(self, obj):
         if isinstance(obj, str):
             lines = obj.splitlines()
