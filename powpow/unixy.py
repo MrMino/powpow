@@ -69,6 +69,9 @@ class GrepResult:
     If ``highlight`` is set to ``True``, using ``repr()`` on an object of this
     class gives a visual (colored) representation of matched lines, otherwise
     the returned string is the same as the one returned by using ``str()``.
+
+    Objects of this class evaluate truthily only if there are any matches in
+    the result.
     """
 
     def __init__(self, pattern: str, matches: LineMatches,
@@ -86,6 +89,9 @@ class GrepResult:
 
     def __repr__(self):
         return self._repr
+
+    def __bool__(self):
+        return bool(self._matches)
 
     @property
     def pattern(self) -> str:
