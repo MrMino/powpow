@@ -7,6 +7,11 @@ ANSI_RESET = '\u001b[0m'
 
 # TODO: make this such that match results aren't inclued in its state
 class grep:  # noqa
+    """Finds matches of a simple string in the object string representation.
+
+    Unless a plain string is used, the representation of the object is obtained
+    by using ``pprint.pformat()``.
+    """
     def __init__(self, pattern: str, highlight: bool = True):
         self.pattern = pattern
         self.highlight = highlight
