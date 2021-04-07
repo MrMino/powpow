@@ -9,18 +9,24 @@ ANSI_RESET = '\u001b[0m'
 LineMatches = List[Tuple[str, List[slice]]]
 
 
-# FIXME: ("aaabbb" | grep('a') | grep('b')).matches contains ANSI colors
 class grep:  # noqa
     """Finds matches of a simple string in the object string representation.
 
-    Unless a plain string is used, the representation of the object is obtained
-    by using ``pprint.pformat()``.
+    Unless a plain string is used or a ``GrepResult`` object, the
+    representation of the object is obtained by using ``pprint.pformat()``.
+
+    Strings are matched by their contents (not their ``repr()``s).
+
+    ``GrepResult`` object is returned on a match. When matching ``GrepResult``,
+    its ``str()`` representation is used.
     """
     def __init__(self, pattern: str, highlight: bool = True):
         self.pattern = pattern
         self.highlight = highlight
 
     def __ror__(self, obj):
+        if isinstance(obj, GrepResult):
+            text = str(obj)
         elif isinstance(obj, str):
             text = obj
         else:
