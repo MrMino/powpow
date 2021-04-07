@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- New `powpow.GrepResult` class. Objects of this class provide detailed
+  introspection into results of `powpow.grep`, and their `repr()` handles
+  presentation of the output, instead of `print()`ing it out like it was
+  before.
+
+### Changed
+- `powpow.grep` now returns a `GrepResult` object - `grep` no longer prints its
+  results into stdout.
+
 ## [0.0.2]
 ### Changed
 - PowPow Grep is now directly importable from `powpow` module as `powpow.grep`.

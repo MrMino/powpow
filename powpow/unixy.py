@@ -1,11 +1,15 @@
 # coding: utf-8
 from pprint import pformat
+from typing import List, Tuple
 
 ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
 
-# TODO: make this such that match results aren't inclued in its state
+LineMatches = List[Tuple[str, List[slice]]]
+
+
+# FIXME: ("aaabbb" | grep('a') | grep('b')).matches contains ANSI colors
 class grep:  # noqa
     """Finds matches of a simple string in the object string representation.
 
@@ -16,41 +20,89 @@ class grep:  # noqa
         self.pattern = pattern
         self.highlight = highlight
 
-    # TODO: this should return some kind of a result object with repr, instead
-    # of printing.
-    # FIXME: TypeError: unsupported operand type(s) for |: 'grep' and 'grep'
     def __ror__(self, obj):
         if isinstance(obj, str):
             lines = obj.splitlines()
         else:
             lines = pformat(obj).splitlines()
-        matches = list(filter(lambda line: self.pattern in line, lines))
-        if self.highlight:
-            self._highlight(matches)
 
-        self.matches = matches
-        print(str(self))
-        return self
+        matches = self._match(self.pattern, lines)
 
-    def __str__(self):
-        return '\n'.join(self.matches)
+        return GrepResult(self.pattern, matches, highlight=self.highlight)
 
-    def _highlight(self, matches):
-        for idx, line in enumerate(matches):
+    @staticmethod
+    def _match(pattern, lines: List[str]) -> LineMatches:
+        """Match lines to a fixed string
+
+        Returns a list of (line, [slice, ...]) tuples, where each slice points
+        to a substring of line that contains the pattern.
+        """
+        pattern_len = len(pattern)
+        matches: LineMatches = []
+
+        for line_idx, line in enumerate(lines):
+            if pattern not in line:
+                continue
+
+            line_matches = []
             match_pos = 0
-
             while True:
-                match_pos = line.find(self.pattern, match_pos + 1)
+                match_pos = line.find(pattern, match_pos)
                 if match_pos < 0:
                     break
 
-                line = (
-                    line[:match_pos]
-                    + ANSI_RED
-                    + line[match_pos:match_pos + len(self.pattern)]
-                    + ANSI_RESET
-                    + line[match_pos + len(self.pattern):]
-                )
+                line_matches.append(slice(match_pos, pattern_len))
+                match_pos += pattern_len
 
-                matches[idx] = line
-                match_pos += len(ANSI_RED) + len(ANSI_RESET)
+            matches.append((line, line_matches))
+
+        return matches
+
+
+# TODO: document properties (numpy style)
+class GrepResult:
+    """Stores, formats, and presents the result of a match
+
+    Using ``str()`` on the objects of this class returns a concatenation of
+    matched lines (e.g. for further grepping).
+
+    If ``highlight`` is set to ``True``, using ``repr()`` on an object of this
+    class gives a visual (colored) representation of matched lines, otherwise
+    the returned string is the same as the one returned by using ``str()``.
+    """
+
+    def __init__(self, pattern: str, matches: LineMatches,
+                 *, highlight: bool = True):
+        self._pattern = pattern
+        self._matches = matches
+
+        self.highlight = highlight
+
+        if self.highlight:
+            self._repr = self._colorize(pattern, self.matched_lines)
+
+    def __str__(self):
+        return '\n'.join(self.matched_lines)
+
+    def __repr__(self):
+        return self._repr
+
+    @property
+    def pattern(self) -> str:
+        return self._pattern
+
+    @property
+    def matches(self) -> LineMatches:
+        return self._matches
+
+    @property
+    def matched_lines(self) -> List[str]:
+        return [line for line, _ in self._matches]
+
+    @staticmethod
+    def _colorize(pattern: str, lines: List[str]):
+        return '\n'.join([
+            line.replace(
+                pattern, ANSI_RED + pattern + ANSI_RESET
+            ) for line in lines
+        ])
