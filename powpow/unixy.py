@@ -21,22 +21,23 @@ class grep:  # noqa
         self.highlight = highlight
 
     def __ror__(self, obj):
-        if isinstance(obj, str):
-            lines = obj.splitlines()
+        elif isinstance(obj, str):
+            text = obj
         else:
-            lines = pformat(obj).splitlines()
+            text = pformat(obj)
 
-        matches = self._match(self.pattern, lines)
+        matches = self._match(self.pattern, text)
 
         return GrepResult(self.pattern, matches, highlight=self.highlight)
 
     @staticmethod
-    def _match(pattern, lines: List[str]) -> LineMatches:
+    def _match(pattern, text: str) -> LineMatches:
         """Match lines to a fixed string
 
         Returns a list of (line, [slice, ...]) tuples, where each slice points
         to a substring of line that contains the pattern.
         """
+        lines = text.splitlines()
         pattern_len = len(pattern)
         matches: LineMatches = []
 
