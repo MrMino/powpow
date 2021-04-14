@@ -1,3 +1,3 @@
-from .unixy import grep
+from .unixy import grep, GrepResult
 
-__all__ = ['grep']
+__all__ = ['grep', 'GrepResult']

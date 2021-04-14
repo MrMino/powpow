@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Changed
+- `powpow.GrepResult` is now actually importable from the top-level namespace.
+
 ## [0.0.3]
 ### Added
 - New `powpow.GrepResult` class. Objects of this class provide detailed
