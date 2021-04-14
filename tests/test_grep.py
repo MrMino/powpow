@@ -1,3 +1,5 @@
+import pytest
+
 from powpow import grep, GrepResult
 
 
@@ -10,6 +12,10 @@ class TestGrep:
     def test_results_in_GrepResult(self):
         output = ("this is a string" | grep("string"))
         assert isinstance(output, GrepResult)
+
+    def test_empty_pattern_is_not_allowed(self):
+        with pytest.raises(ValueError):
+            grep('')
 
     def test_parameters_are_directly_available(self):
         g = grep('pattern', highlight='highlight')

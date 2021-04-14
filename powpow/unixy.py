@@ -20,8 +20,13 @@ class grep:
 
     ``GrepResult`` object is returned on a match. When matching ``GrepResult``,
     its ``str()`` representation is used.
+
+    Raises ``ValueError`` if ``pattern`` is an empty string.
     """
     def __init__(self, pattern: str, highlight: bool = True):
+        if not pattern:
+            raise ValueError("Empty pattern is not allowed.")
+
         self.pattern = pattern
         self.highlight = highlight
 
