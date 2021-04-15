@@ -115,6 +115,10 @@ class GrepResult:
         return self._pattern
 
     @property
+    def string(self) -> str:
+        return self._string
+
+    @property
     def matches(self) -> LineMatches:
         return self._matches
 
