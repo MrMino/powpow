@@ -40,7 +40,10 @@ class grep:
 
         matches = self._match(self.pattern, text)
 
-        return GrepResult(self.pattern, matches, highlight=self.highlight)
+        return GrepResult(
+            self.pattern, text, matches,
+            highlight=self.highlight
+        )
 
     @staticmethod
     def _match(pattern, text: str) -> LineMatches:
@@ -87,8 +90,9 @@ class GrepResult:
     the result.
     """
 
-    def __init__(self, pattern: str, matches: LineMatches,
+    def __init__(self, pattern: str, string: str, matches: LineMatches,
                  *, highlight: bool = True):
+        self._string = string
         self._pattern = pattern
         self._matches = matches
 

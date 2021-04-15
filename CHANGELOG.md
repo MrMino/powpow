@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `powpow.GrepResult` is now actually importable from the top-level namespace.
 - `powpow.grep` will no longer accept an empty `pattern` string, raising
   `ValueError` instead.
+- `powpow.GrepResult` now holds the string against which the match was
+  performed in its `.string` attribute.
 
 ## [0.0.3]
 ### Added
