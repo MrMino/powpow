@@ -6,8 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Changed
+### Added
 - `powpow.GrepResult` is now actually importable from the top-level namespace.
+
+### Changed
 - `powpow.grep` will no longer accept an empty `pattern` string, raising
   `ValueError` instead.
 - `powpow.GrepResult` now holds the string against which the match was
