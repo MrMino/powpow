@@ -98,7 +98,7 @@ class GrepResult:
 
     def __init__(self, pattern: str, string: str, matches: LineMatches,
                  *, highlight: bool = True):
-        self._string = string
+        self._input = string
         self._pattern = pattern
         self._matches = matches
 
@@ -125,8 +125,8 @@ class GrepResult:
         return self._pattern
 
     @property
-    def string(self) -> str:
-        return self._string
+    def input(self) -> str:
+        return self._input
 
     @property
     def matches(self) -> LineMatches:
