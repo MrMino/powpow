@@ -9,6 +9,10 @@ class TestGrep:
         output = ("this is a string" | grep("string"))
         assert bool(output) is True
 
+    def test_grep_multiple_times(self):
+        output = ("this is a string" | grep("string") | grep("string"))
+        assert bool(output) is True
+
     def test_results_in_GrepResult(self):
         output = ("this is a string" | grep("string"))
         assert isinstance(output, GrepResult)
