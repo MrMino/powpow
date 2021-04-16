@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Added
 - `powpow.GrepResult` is now actually importable from the top-level namespace.
+- `powpow.GrepResult` is now guaranteed to have all of the methods the `str`
+  class has. These methods operate on the same strings as returned by `__str__`
+  of `GrepResult` objects.
 
 ### Changed
 - `powpow.grep` will no longer accept an empty `pattern` string, raising

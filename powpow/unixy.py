@@ -94,6 +94,10 @@ class GrepResult:
 
     Objects of this class evaluate truthily only if there are any matches in
     the result.
+
+    Objects of this class are guaranteed to have all of the methods the `str`
+    class has. These methods operate on the same string as returned by
+    `__str__` of this class.
     """
 
     def __init__(self, pattern: str, string: str, matches: LineMatches,
@@ -119,6 +123,12 @@ class GrepResult:
 
     def __bool__(self):
         return bool(self._matches)
+
+    def __getattr__(self, name):
+        return getattr(self._input, name)
+
+    def __dir__(self):
+        return list(set(dir(self._input) + super().__dir__()))
 
     @property
     def pattern(self) -> str:
