@@ -2,6 +2,12 @@
 from pprint import pformat
 from typing import List, Tuple
 
+from functools import lru_cache
+try:
+    from functools import cached_property
+except ImportError:
+    from ._backports import cached_property  # type: ignore
+
 ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
@@ -101,9 +107,11 @@ class GrepResult:
         if self.highlight:
             self._repr = self._colorize(pattern, self.matched_lines)
 
+    @lru_cache(maxsize=1)
     def __str__(self):
         return '\n'.join(self.matched_lines)
 
+    @lru_cache(maxsize=1)
     def __repr__(self):
         return self._repr
 
@@ -122,7 +130,7 @@ class GrepResult:
     def matches(self) -> LineMatches:
         return self._matches
 
-    @property
+    @cached_property
     def matched_lines(self) -> List[str]:
         return [line for line, _ in self._matches]
 

@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   `ValueError` instead.
 - `powpow.GrepResult` now holds the string against which the match was
   performed in its `.string` attribute.
+- Return values of `powpow.GrepResult`'s `__str__` and `__repr__` methods, and
+  `matches` property, are now cached.
 
 ## [0.0.3]
 ### Added
