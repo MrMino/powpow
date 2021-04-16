@@ -86,10 +86,12 @@ class cached_property:
             return self
         if self.attrname is None:
             raise TypeError(
-                "Cannot use cached_property instance without calling __set_name__ on it.")
+                "Cannot use cached_property instance without calling "
+                "__set_name__ on it.")
         try:
             cache = instance.__dict__
-        except AttributeError:  # not all objects have __dict__ (e.g. class defines slots)
+        # not all objects have __dict__ (e.g. class defines slots)
+        except AttributeError:
             msg = (
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
@@ -106,8 +108,10 @@ class cached_property:
                         cache[self.attrname] = val
                     except TypeError:
                         msg = (
-                            f"The '__dict__' attribute on {type(instance).__name__!r} instance "
-                            f"does not support item assignment for caching {self.attrname!r} property."
+                            f"The '__dict__' attribute on "
+                            f"{type(instance).__name__!r} instance does not "
+                            f"support item assignment for caching "
+                            f"{self.attrname!r} property."
                         )
                         raise TypeError(msg) from None
         return val
