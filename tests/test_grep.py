@@ -24,3 +24,15 @@ class TestGrep:
     def test_parameters_are_directly_available(self):
         g = grep('pattern', highlight='highlight')
         assert g.pattern == 'pattern' and g.highlight == 'highlight'
+
+    def test_highlights_matches_in_repr(self):
+        output = ("this is a string" | grep("this"))
+        assert repr(output).startswith('\u001b[31m')
+
+    def test_highlight_resets_after_match(self):
+        output = repr("this is a string" | grep("a"))
+        assert output[output.find('a') + 1:].startswith('\u001b[0m')
+
+    def test_highligh_can_be_turned_off(self):
+        output = ("this is a string" | grep("string", highlight=False))
+        assert repr(output) == "this is a string"
