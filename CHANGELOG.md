@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Return values of `powpow.GrepResult`'s `__str__` and `__repr__` methods, and
   `matches` property, are now cached.
 
+### Fixed
+- `powpow.GrepResult.__repr__` no longer raises `AtributeError`
+
 ## [0.0.3]
 ### Added
 - New `powpow.GrepResult` class. Objects of this class provide detailed

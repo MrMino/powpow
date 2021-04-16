@@ -106,6 +106,8 @@ class GrepResult:
 
         if self.highlight:
             self._repr = self._colorize(pattern, self.matched_lines)
+        else:
+            self._repr = '\n'.join(self.matched_lines)
 
     @lru_cache(maxsize=1)
     def __str__(self):
