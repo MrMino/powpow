@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
+- Basic implementation of `powpow.cat` and `powpow.CatResult`.
 - `powpow.GrepResult` is now actually importable from the top-level namespace.
 - `powpow.GrepResult` is now guaranteed to have all of the methods the `str`
   class has. These methods operate on the same strings as returned by `__str__`

@@ -1,6 +1,8 @@
 # coding: utf-8
+import os
+from pathlib import Path
 from pprint import pformat
-from typing import List, Tuple
+from typing import List, Tuple, Any, Union
 
 from functools import lru_cache
 try:
@@ -153,3 +155,38 @@ class GrepResult:
                 pattern, ANSI_RED + pattern + ANSI_RESET
             ) for line in lines
         ])
+
+
+def cat(*paths: Union[str, 'os.PathLike[Any]']) -> 'CatResult':
+    """Reads text from files & CATenates it."""
+    _paths = tuple(Path(path) for path in paths)
+    contents = tuple(p.read_text() for p in _paths)
+    return CatResult(paths, contents)
+
+
+class CatResult:
+    def __init__(self, paths, contents):
+        assert len(paths) == len(contents)
+
+        self._paths = paths
+        self._contents = contents
+
+    @lru_cache(maxsize=1)
+    def __str__(self):
+        return ''.join(self.contents)
+
+    def __repr__(self):
+        return str(self)
+
+    @property
+    def paths(self):
+        return self._paths
+
+    @property
+    def contents(self):
+        return self._contents
+
+    @property
+    def per_file(self):
+        # This is specifically done here to forbid mutation of the return value
+        return {p: c for p, c in zip(self._paths, self._contents)}
