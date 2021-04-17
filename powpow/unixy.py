@@ -17,7 +17,6 @@ ANSI_RESET = '\u001b[0m'
 LineMatches = List[Tuple[str, List[slice]]]
 
 
-# TODO: grep(pattern, file1, file2, obj, obj2) should be possible too
 class grep:
     """Finds matches of a simple string in the object string representation.
 
