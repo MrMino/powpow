@@ -1,5 +1,7 @@
 import pytest
 
+from textwrap import dedent
+
 from powpow import grep, GrepResult
 
 
@@ -36,3 +38,13 @@ class TestGrep:
     def test_highligh_can_be_turned_off(self):
         output = ("this is a string" | grep("string", highlight=False))
         assert repr(output) == "this is a string"
+
+    def test_finds_matched_lines(self):
+        lines = dedent("""
+        this
+        is
+        a
+        string
+        """)
+
+        assert (lines | grep("i")).matched_lines == ['this', 'is', 'string']
