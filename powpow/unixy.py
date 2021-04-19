@@ -151,6 +151,7 @@ class GrepResult:
 
     @cached_property
     def matched_lines(self) -> List[str]:
+        # each span stops right before the newline character
         line_spans = tuple((m.start(), m.end())
                            for m
                            in re.finditer('^.*$', self.input, re.MULTILINE))
@@ -158,8 +159,8 @@ class GrepResult:
         lines_to_add = self.line_matches.keys()
         lines = [''] * len(self.line_matches)
 
-        for matched_line_idx, input_line_idx in enumerate(lines_to_add):
-            matched_line = self.input[slice(*line_spans[matched_line_idx])]
+        for matched_line_idx, line_to_add_idx in enumerate(lines_to_add):
+            matched_line = self.input[slice(*line_spans[line_to_add_idx])]
             lines[matched_line_idx] = matched_line
 
         return lines
