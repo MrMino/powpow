@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `powpow.GrepResult` is now guaranteed to have all of the methods the `str`
   class has. These methods operate on the same strings as returned by `__str__`
   of `GrepResult` objects.
+- Property `.matched_lines` of `powpow.GrepResult`, which returns a dict with
+  line indexes mapped to matches (`re.Match` objects) found in a given line.
 
 ### Changed
 - `powpow.grep` now uses the `re` module for finding matches.

@@ -1,9 +1,10 @@
 # coding: utf-8
 import re
 import os
+from collections import defaultdict
 from pathlib import Path
 from pprint import pformat
-from typing import List, Any, Union
+from typing import Dict, List, Any, Union
 
 from functools import lru_cache
 try:
@@ -130,20 +131,37 @@ class GrepResult:
         return self._matches
 
     @cached_property
-    def matched_lines(self) -> List[str]:
-        match_positions = [match.start() for match in self.matches]
+    def line_matches(self) -> Dict[int, LineMatches]:
         newline_iterator = re.finditer('$', self.input, re.MULTILINE)
 
-        lines = []
+        line_matches = defaultdict(list)
 
+        line_idx = 0
         start = 0
         end = next(newline_iterator).start() + 1
-        for pos in match_positions:
-            while not (start <= pos < end):
+
+        for match in self.matches:
+            while not (start <= match.start() < end):
+                line_idx += 1
                 start = end
                 end = next(newline_iterator).start() + 1
 
-            lines.append(self.input[start:end - 1])  # without the newline
+            line_matches[line_idx].append(match)
+
+        return dict(line_matches)
+
+    @cached_property
+    def matched_lines(self) -> List[str]:
+        line_spans = tuple((m.start(), m.end())
+                           for m
+                           in re.finditer('^.*$', self.input, re.MULTILINE))
+
+        lines_to_add = self.line_matches.keys()
+        lines = [''] * len(self.line_matches)
+
+        for matched_line_idx, input_line_idx in enumerate(lines_to_add):
+            matched_line = self.input[slice(*line_spans[matched_line_idx])]
+            lines[matched_line_idx] = matched_line
 
         return lines
 
