@@ -14,6 +14,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   of `GrepResult` objects.
 
 ### Changed
+- `powpow.grep` now uses the `re` module for finding matches.
+- The `.matches` property of `powpow.GrepResult` returns a list of `re.Match`
+  objects now.
 - `powpow.grep` will no longer accept an empty `pattern` string, raising
   `ValueError` instead.
 - `powpow.GrepResult` now holds the string against which the match was
@@ -22,7 +25,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   `matches` property, are now cached.
 
 ### Fixed
-- `powpow.GrepResult.__repr__` no longer raises `AtributeError`
+- `powpow.GrepResult.__repr__` no longer raises `AtributeError`.
 
 ## [0.0.3]
 ### Added
