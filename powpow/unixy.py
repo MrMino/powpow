@@ -113,7 +113,7 @@ class GrepResult:
         return bool(self._matches)
 
     def __getattr__(self, name):
-        return getattr(self._input, name)
+        return getattr(str(self), name)
 
     def __dir__(self):
         return list(set(dir(self._input) + super().__dir__()))
