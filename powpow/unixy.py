@@ -102,12 +102,11 @@ class GrepResult:
     def __str__(self):
         return '\n'.join(self.matched_lines)
 
-    @lru_cache(maxsize=1)
     def __repr__(self):
         if self.highlight:
             return self._colorize(self.pattern, self.matched_lines)
         else:
-            return '\n'.join(self.matched_lines)
+            return str(self)
 
     def __bool__(self):
         return bool(self._matches)
