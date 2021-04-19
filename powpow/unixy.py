@@ -1,12 +1,15 @@
 # coding: utf-8
+import re
+
 from pprint import pformat
-from typing import List, Tuple
+from typing import List
 
 ANSI_RED = '\u001b[31m'
+ANSI_DARK_RED = '\u001b[1;31m'
 ANSI_RESET = '\u001b[0m'
 
 
-LineMatches = List[Tuple[str, List[slice]]]
+LineMatches = List[re.Match]
 
 
 # TODO: grep(pattern, file1, file2, obj, obj2) should be possible too
@@ -31,8 +34,11 @@ class grep:
         self.highlight = highlight
 
     def __ror__(self, obj):
+        parent_result = None
+
         if isinstance(obj, GrepResult):
             text = str(obj)
+            parent_result = obj
         elif isinstance(obj, str):
             text = obj
         else:
@@ -42,37 +48,14 @@ class grep:
 
         return GrepResult(
             self.pattern, text, matches,
+            parent=parent_result,
             highlight=self.highlight
         )
 
     @staticmethod
     def _match(pattern, text: str) -> LineMatches:
-        """Match lines to a fixed string
-
-        Returns a list of (line, [slice, ...]) tuples, where each slice points
-        to a substring of line that contains the pattern.
-        """
-        lines = text.splitlines()
-        pattern_len = len(pattern)
-        matches: LineMatches = []
-
-        for line_idx, line in enumerate(lines):
-            if pattern not in line:
-                continue
-
-            line_matches = []
-            match_pos = 0
-            while True:
-                match_pos = line.find(pattern, match_pos)
-                if match_pos < 0:
-                    break
-
-                line_matches.append(slice(match_pos, pattern_len))
-                match_pos += pattern_len
-
-            matches.append((line, line_matches))
-
-        return matches
+        """Match lines to a fixed string"""
+        return list(re.finditer(re.escape(pattern), text))
 
 
 # TODO: document properties (numpy style)
@@ -91,7 +74,8 @@ class GrepResult:
     """
 
     def __init__(self, pattern: str, string: str, matches: LineMatches,
-                 *, highlight: bool = True):
+                 *, parent: 'GrepResult' = None, highlight: bool = True):
+        self._parrent = parent
         self._string = string
         self._pattern = pattern
         self._matches = matches
@@ -99,7 +83,15 @@ class GrepResult:
         self.highlight = highlight
 
         if self.highlight:
-            self._repr = self._colorize(pattern, self.matched_lines)
+            # TODO: get parents repr, recolorize it (ANSII_RED → ANSI_DARK_RED)
+            # by slices inside parent.match, add colors for this results match
+            # on top.
+            if parent is not None:
+                raise NotImplementedError
+            else:
+                matched_lines = self.matched_lines
+
+            self._repr = self._colorize(pattern, matched_lines)
 
     def __str__(self):
         return '\n'.join(self.matched_lines)
@@ -124,7 +116,7 @@ class GrepResult:
 
     @property
     def matched_lines(self) -> List[str]:
-        return [line for line, _ in self._matches]
+        return [match.string for match in self._matches]
 
     @staticmethod
     def _colorize(pattern: str, lines: List[str]):
