@@ -97,18 +97,16 @@ class GrepResult:
 
         self.highlight = highlight
 
-        if self.highlight:
-            self._repr = self._colorize(pattern, self.matched_lines)
-        else:
-            self._repr = '\n'.join(self.matched_lines)
-
     @lru_cache(maxsize=1)
     def __str__(self):
         return '\n'.join(self.matched_lines)
 
     @lru_cache(maxsize=1)
     def __repr__(self):
-        return self._repr
+        if self.highlight:
+            return self._colorize(self.pattern, self.matched_lines)
+        else:
+            return '\n'.join(self.matched_lines)
 
     def __bool__(self):
         return bool(self._matches)
