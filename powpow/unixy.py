@@ -17,13 +17,13 @@ ANSI_RESET = '\u001b[0m'
 
 
 try:
-    re.Match
-except AttributeError:     # re.Match class is not available in Python 3.6
-    import _sre            # type: ignore
-    re.Match = _sre.Match  # type: ignore
+    match_cls = re.Match
+except AttributeError:      # re.Match class is not available in Python 3.6
+    import _sre             # type: ignore
+    match_cls = _sre.Match  # type: ignore
 
 
-LineMatches = List[re.Match]
+LineMatches = List[match_cls]
 
 
 class grep:
