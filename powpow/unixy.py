@@ -1,8 +1,9 @@
 # coding: utf-8
+import re
 import os
 from pathlib import Path
 from pprint import pformat
-from typing import List, Tuple, Any, Union
+from typing import List, Any, Union
 
 from functools import lru_cache
 try:
@@ -14,7 +15,7 @@ ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
 
-LineMatches = List[Tuple[str, List[slice]]]
+LineMatches = List[re.Match]
 
 
 class grep:
@@ -59,27 +60,7 @@ class grep:
         Returns a list of (line, [slice, ...]) tuples, where each slice points
         to a substring of line that contains the pattern.
         """
-        lines = text.splitlines()
-        pattern_len = len(pattern)
-        matches: LineMatches = []
-
-        for line_idx, line in enumerate(lines):
-            if pattern not in line:
-                continue
-
-            line_matches = []
-            match_pos = 0
-            while True:
-                match_pos = line.find(pattern, match_pos)
-                if match_pos < 0:
-                    break
-
-                line_matches.append(slice(match_pos, pattern_len))
-                match_pos += pattern_len
-
-            matches.append((line, line_matches))
-
-        return matches
+        return list(re.finditer(re.escape(pattern), text))
 
 
 # TODO: document properties (numpy style)
@@ -145,7 +126,21 @@ class GrepResult:
 
     @cached_property
     def matched_lines(self) -> List[str]:
-        return [line for line, _ in self._matches]
+        match_positions = [match.start() for match in self.matches]
+        newline_iterator = re.finditer('$', self.input, re.MULTILINE)
+
+        lines = []
+
+        start = 0
+        end = next(newline_iterator).start() + 1
+        for pos in match_positions:
+            while not (start <= pos < end):
+                start = end
+                end = next(newline_iterator).start() + 1
+
+            lines.append(self.input[start:end - 1])  # without the newline
+
+        return lines
 
     @staticmethod
     def _colorize(pattern: str, lines: List[str]):
