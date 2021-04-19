@@ -15,6 +15,13 @@ ANSI_RED = '\u001b[31m'
 ANSI_RESET = '\u001b[0m'
 
 
+try:
+    re.Match
+except AttributeError:     # re.Match class is not available in Python 3.6
+    import _sre            # type: ignore
+    re.Match = _sre.Match  # type: ignore
+
+
 LineMatches = List[re.Match]
 
 
