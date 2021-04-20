@@ -165,7 +165,7 @@ class GrepResult:
 
         return lines
 
-    # TODO: CACHE THIS!
+    @lru_cache(maxsize=1)
     def _colorized(self):
         buf = io.StringIO()
         line_spans = tuple((m.start(), m.end())
