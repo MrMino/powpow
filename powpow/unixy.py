@@ -218,6 +218,9 @@ class CatResult:
     def __dir__(self):
         return list(set(dir(self._input) + super().__dir__()))
 
+    def __bool__(self):
+        return any(self._contents)
+
     @property
     def paths(self):
         return self._paths
