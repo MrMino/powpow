@@ -5,7 +5,7 @@ import os
 from collections import defaultdict
 from pathlib import Path
 from pprint import pformat
-from typing import Dict, List, Any, Union
+from typing import Dict, List, Any, Union, Tuple
 
 from functools import lru_cache
 try:
@@ -199,7 +199,9 @@ def cat(*paths: Union[str, 'os.PathLike[Any]']) -> 'CatResult':
 
 
 class CatResult:
-    def __init__(self, paths, contents):
+    def __init__(self,
+                 paths: Tuple[Path, ...],
+                 contents: Tuple[str, ...]):
         assert len(paths) == len(contents)
 
         self._paths = paths
@@ -222,11 +224,11 @@ class CatResult:
         return any(self._contents)
 
     @property
-    def paths(self):
+    def paths(self) -> Tuple[Path, ...]:
         return self._paths
 
     @property
-    def contents(self):
+    def contents(self) -> Tuple[str, ...]:
         return self._contents
 
     @property
