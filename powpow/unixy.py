@@ -195,7 +195,7 @@ def cat(*paths: Union[str, 'os.PathLike[Any]']) -> 'CatResult':
     """Reads text from files & CATenates it."""
     _paths = tuple(Path(path) for path in paths)
     contents = tuple(p.read_text() for p in _paths)
-    return CatResult(paths, contents)
+    return CatResult(_paths, contents)
 
 
 class CatResult:
