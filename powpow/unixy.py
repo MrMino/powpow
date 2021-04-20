@@ -248,4 +248,5 @@ class CatResult:
     @property
     def per_file(self):
         # This is specifically done here to forbid mutation of the return value
+        # Do not cache this.
         return {p: c for p, c in zip(self._paths, self._contents)}
