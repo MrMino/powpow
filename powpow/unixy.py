@@ -1,4 +1,5 @@
 # coding: utf-8
+import io
 import re
 import os
 from collections import defaultdict
@@ -104,7 +105,7 @@ class GrepResult:
 
     def __repr__(self):
         if self.highlight:
-            return self._colorize(self.pattern, self.matched_lines)
+            return self._colorized()
         else:
             return str(self)
 
@@ -165,13 +166,30 @@ class GrepResult:
 
         return lines
 
-    @staticmethod
-    def _colorize(pattern: str, lines: List[str]):
-        return '\n'.join([
-            line.replace(
-                pattern, ANSI_RED + pattern + ANSI_RESET
-            ) for line in lines
-        ])
+    # TODO: CACHE THIS!
+    def _colorized(self):
+        buf = io.StringIO()
+        line_spans = tuple((m.start(), m.end())
+                           for m
+                           in re.finditer('^.*$', self.input, re.MULTILINE))
+        for line, line_idx, matches in zip(self.matched_lines,
+                                           self.line_matches.keys(),
+                                           self.line_matches.values()):
+            start = line_spans[line_idx][0]
+            for match in matches:
+                end = match.start()
+                buf.write(self.input[start:end])
+
+                start = match.start()
+                end = match.end()
+                buf.write(ANSI_RED)
+                buf.write(self.input[start:end])
+                buf.write(ANSI_RESET)
+
+                start = match.end()
+            end = line_spans[line_idx][1]
+            buf.write(self.input[start:end + 1])  # +1 for newline
+        return buf.getvalue()
 
 
 def cat(*paths: Union[str, 'os.PathLike[Any]']) -> 'CatResult':
