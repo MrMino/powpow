@@ -198,7 +198,21 @@ def cat(*paths: Union[str, 'os.PathLike[Any]']) -> 'CatResult':
     return CatResult(_paths, contents)
 
 
+# TODO: document properties (numpy style)
 class CatResult:
+    """Stores and provides introspection of results of calls to ``cat``.
+
+    ``str()``-ing and ``repr()``-ing objects of this class returns catenation
+    of the contents of files specified in the call to ``cat``.
+
+    Objects of this class evaluate truthily as long as the result of the
+    catenation is not empty.
+
+    Objects of this class are guaranteed to have all of the methods the `str`
+    class has. These methods operate on the same string as returned by
+    `__str__` of this class.
+    """
+
     def __init__(self,
                  paths: Tuple[Path, ...],
                  contents: Tuple[str, ...]):
