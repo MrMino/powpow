@@ -212,6 +212,9 @@ class CatResult:
     def __repr__(self):
         return str(self)
 
+    def __getattr__(self, name):
+        return getattr(str(self), name)
+
     @property
     def paths(self):
         return self._paths
