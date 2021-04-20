@@ -215,6 +215,9 @@ class CatResult:
     def __getattr__(self, name):
         return getattr(str(self), name)
 
+    def __dir__(self):
+        return list(set(dir(self._input) + super().__dir__()))
+
     @property
     def paths(self):
         return self._paths
