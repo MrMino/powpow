@@ -19,9 +19,8 @@ ANSI_RESET = '\u001b[0m'
 
 try:
     match_cls = re.Match
-except AttributeError:      # re.Match class is not available in Python 3.6
-    import _sre             # type: ignore
-    match_cls = _sre.Match  # type: ignore
+except AttributeError:  # re.Match class is not available in Python 3.6
+    match_cls = type(re.compile('', 0).match(''))  # type: ignore
 
 
 LineMatches = List[match_cls]
