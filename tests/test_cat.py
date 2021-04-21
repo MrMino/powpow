@@ -48,6 +48,11 @@ class TestCatInit:
         tmp_file.write_text(str(obj).replace('\'', '"'))
         assert cat(tmp_file).json() == obj
 
+    def test_file_method(self, tmp_file):
+        text = "this is some text to catenate"
+        tmp_file.write_text(text)
+        assert cat(tmp_file, tmp_file).file().read() == text * 2
+
 
 class TestCatResult:
     def test_paths_property_lists_paths(self, tmp_file):

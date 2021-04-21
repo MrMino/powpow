@@ -258,3 +258,7 @@ class CatResult:
         """
         import json
         return json.loads(str(self), **loads_kwargs)
+
+    def file(self) -> io.TextIOBase:
+        """Return a file-like object with the result of the catenation."""
+        return io.StringIO(str(self))
