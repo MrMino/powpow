@@ -251,7 +251,7 @@ class CatResult:
         # Do not cache this.
         return {p: c for p, c in zip(self._paths, self._contents)}
 
-    def json(self, **loads_kwargs):
+    def json(self, **loads_kwargs) -> Any:
         """Interpret this catenation as json, parse it, and return the result.
 
         Keyword arguments of this method are passed as-is to ``json.loads``.
