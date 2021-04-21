@@ -43,6 +43,11 @@ class TestCatInit:
     def test_returns_CatResult(self, tmp_file):
         assert isinstance(cat(tmp_file), CatResult)
 
+    def test_json_method(self, tmp_file):
+        obj = {"this": {"is": "json"}}
+        tmp_file.write_text(str(obj).replace('\'', '"'))
+        assert cat(tmp_file).json() == obj
+
 
 class TestCatResult:
     def test_paths_property_lists_paths(self, tmp_file):

@@ -250,3 +250,11 @@ class CatResult:
         # This is specifically done here to forbid mutation of the return value
         # Do not cache this.
         return {p: c for p, c in zip(self._paths, self._contents)}
+
+    def json(self, **loads_kwargs):
+        """Interpret this catenation as json, parse it, and return the result.
+
+        Keyword arguments of this method are passed as-is to ``json.loads``.
+        """
+        import json
+        return json.loads(str(self), **loads_kwargs)
