@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   of `GrepResult` objects.
 - Property `.matched_lines` of `powpow.GrepResult`, which returns a dict with
   line indexes mapped to matches (`re.Match` objects) found in a given line.
+- `powpow.GrepResult` now has `__eq__` and `__hash__` implemented.
 
 ### Changed
 - `powpow.grep` now uses the `re` module for finding matches.
