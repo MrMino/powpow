@@ -6,13 +6,6 @@ from pathlib import Path
 from powpow import cat, CatResult
 
 
-@pytest.fixture
-def tmp_file(tmp_path):
-    tmp_file = tmp_path / 'file'
-    tmp_file.touch()
-    return tmp_file
-
-
 class TestCatInit:
 
     @pytest.fixture
