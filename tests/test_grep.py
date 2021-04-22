@@ -54,3 +54,9 @@ class TestGrep:
 
     def test_is_hashable(self):
         hash("a" | grep("a"))
+
+    def test_different_matches_dont_hash_the_same(self):
+        text = "This is what we'll grep"
+        r1 = text | grep("This")
+        r2 = text | grep("we'll")
+        assert hash(r1) != hash(r2)

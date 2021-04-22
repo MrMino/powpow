@@ -130,7 +130,10 @@ class GrepResult:
         return str(self) == str(other)
 
     def __hash__(self):
-        return hash(str(self))
+        # On its own, str(self) will not be enough - it is not highlighted, and
+        # so its the same on different patterns, hence we also hash
+        # self._pattern here.
+        return hash((str(self), self._pattern))
 
     @property
     def pattern(self) -> str:
