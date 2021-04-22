@@ -51,3 +51,6 @@ class TestGrep:
 
     def test_has_eq_with_other_strings(self):
         assert "string" | grep("s") == "string"
+
+    def test_is_hashable(self):
+        hash("a" | grep("a"))
