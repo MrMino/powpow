@@ -129,6 +129,9 @@ class GrepResult:
     def __eq__(self, other):
         return str(self) == str(other)
 
+    def __hash__(self):
+        return hash(str(self))
+
     @property
     def pattern(self) -> str:
         return self._pattern
