@@ -211,6 +211,10 @@ class CatResult:
     Objects of this class are guaranteed to have all of the methods the `str`
     class has. These methods operate on the same string as returned by
     `__str__` of this class.
+
+    Objects of this class implement equality comparison by ``str()``-ing the
+    object they're being comparred to, and comparing that to the result of
+    their own ``__str__()``.
     """
 
     def __init__(self,
@@ -221,9 +225,14 @@ class CatResult:
         self._paths = paths
         self._contents = contents
 
-    @lru_cache(maxsize=1)
+        self._str = None
+
     def __str__(self):
-        return ''.join(self.contents)
+        # This cannot be cached using lru_cache, otherwise it causes unbound
+        # recursion between lru_cache → __hash__ → __str__ → lru_cache
+        if self._str is None:
+            self._str = ''.join(self.contents)
+        return self._str
 
     def __repr__(self):
         return str(self)
@@ -236,6 +245,9 @@ class CatResult:
 
     def __bool__(self):
         return any(self._contents)
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     @property
     def paths(self) -> Tuple[Path, ...]:

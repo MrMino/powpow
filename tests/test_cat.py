@@ -72,3 +72,8 @@ class TestCatResult:
         paths = [tmp_file, tmp_file, tmp_file]
         catenated = "contentscontentscontents"
         assert str(cat(*paths)) == catenated
+
+    def test_implements_eq_over_stringification(self, tmp_file):
+        compared = {"this": "will be the object to which we compare"}
+        tmp_file.write_text(repr(compared))
+        assert cat(tmp_file) == compared
