@@ -88,6 +88,10 @@ class GrepResult:
     Objects of this class are guaranteed to have all of the methods the `str`
     class has. These methods operate on the same string as returned by
     `__str__` of this class.
+
+    Objects of this class implement equality comparison by ``str()``-ing the
+    object they're being comparred to, and comparing that to the result of
+    their own ``__str__()``.
     """
 
     def __init__(self, pattern: str, string: str, matches: LineMatches,
@@ -96,11 +100,16 @@ class GrepResult:
         self._pattern = pattern
         self._matches = matches
 
+        self._str = None
+
         self.highlight = highlight
 
-    @lru_cache(maxsize=1)
     def __str__(self):
-        return '\n'.join(self.matched_lines)
+        # This cannot be cached using lru_cache, otherwise it causes unbound
+        # recursion between lru_cache → __hash__ → __str__ → lru_cache
+        if self._str is None:
+            self._str = '\n'.join(self.matched_lines)
+        return self._str
 
     def __repr__(self):
         if self.highlight:
@@ -116,6 +125,9 @@ class GrepResult:
 
     def __dir__(self):
         return list(set(dir(self._input) + super().__dir__()))
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
     @property
     def pattern(self) -> str:
