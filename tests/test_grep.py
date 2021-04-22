@@ -48,3 +48,6 @@ class TestGrep:
         """)
 
         assert (lines | grep("i")).matched_lines == ['this', 'is', 'string']
+
+    def test_has_eq_with_other_strings(self):
+        assert "string" | grep("s") == "string"
