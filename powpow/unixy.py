@@ -108,7 +108,7 @@ class GrepResult:
         # This cannot be cached using lru_cache, otherwise it causes unbound
         # recursion between lru_cache → __hash__ → __str__ → lru_cache
         if self._str is None:
-            self._str = '\n'.join(self.matched_lines)
+            self._str = ''.join(self.matched_lines)
         return self._str
 
     def __repr__(self):
@@ -170,7 +170,7 @@ class GrepResult:
     @cached_property
     def matched_lines(self) -> List[str]:
         # each span stops right before the newline character
-        line_spans = tuple((m.start(), m.end())
+        line_spans = tuple((m.start(), m.end() + 1)  # +1 for newline
                            for m
                            in re.finditer('^.*$', self.input, re.MULTILINE))
 

@@ -46,8 +46,8 @@ class TestGrep:
         a
         string
         """)
-
-        assert (lines | grep("i")).matched_lines == ['this', 'is', 'string']
+        result = lines | grep("i")
+        assert result.matched_lines == ['this\n', 'is\n', 'string\n']
 
     def test_has_eq_with_other_strings(self):
         assert "string" | grep("s") == "string"
@@ -60,3 +60,7 @@ class TestGrep:
         r1 = text | grep("This")
         r2 = text | grep("we'll")
         assert hash(r1) != hash(r2)
+
+    def test_preserves_last_newline(self):
+        text = "This input has a newline that should be preserved \n"
+        assert str(text | grep("This")).endswith('\n')
