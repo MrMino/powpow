@@ -113,7 +113,7 @@ class GrepResult:
 
     def __repr__(self):
         if self.highlight:
-            return self._colorized()
+            return self._colorized().rstrip('\n')
         else:
             return str(self)
 

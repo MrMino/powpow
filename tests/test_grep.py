@@ -64,3 +64,8 @@ class TestGrep:
     def test_preserves_last_newline(self):
         text = "This input has a newline that should be preserved \n"
         assert str(text | grep("This")).endswith('\n')
+
+    def test_repr_doesnt_include_last_newline(self):
+        text = "This input has a newline that should be preserved \n"
+        # But repr(result) does not
+        assert not repr(text | grep("This")).endswith('\n')
