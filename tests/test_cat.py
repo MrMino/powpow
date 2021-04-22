@@ -77,3 +77,7 @@ class TestCatResult:
         compared = {"this": "will be the object to which we compare"}
         tmp_file.write_text(repr(compared))
         assert cat(tmp_file) == compared
+
+    def test_is_hashable(self, tmp_file):
+        tmp_file.touch()
+        hash(cat(tmp_file))
