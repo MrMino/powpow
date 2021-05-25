@@ -295,3 +295,7 @@ class CatResult:
     def file(self) -> io.TextIOBase:
         """Return a file-like object with the result of the catenation."""
         return io.StringIO(str(self))
+
+
+class bat:
+    """Same as cat, but returns bytes."""
