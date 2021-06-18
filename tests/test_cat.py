@@ -25,6 +25,7 @@ class TestCatInit:
                              itertools.product(path_types, repeat=3))
     def test_takes_multiple_filenames_of_different_types(self, path_types,
                                                          tmp_file):
+        assert 1 == 0
         typ_a, typ_b, typ_c = path_types
         cat(typ_a(tmp_file), typ_b(tmp_file), typ_c(tmp_file))
 
